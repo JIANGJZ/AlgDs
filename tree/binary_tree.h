@@ -1,8 +1,10 @@
 #ifndef AlgDs_binary_tree_h
 #define AlgDs_binary_tree_h
 
-#include <algorithm>
+#include "v_stack.h"
+#include "l_queue.h"
 
+#include <algorithm>
 #include <stdlib.h>
 
 
@@ -12,6 +14,14 @@ struct BinNode {
     
     BinNode(T const& e, BinNode<T>* p = nullptr, BinNode<T>* lc = nullptr, BinNode<T>* rc = nullptr, int h = 0) :
     m_data(e), m_parent(p), m_lchild(lc), m_rchild(rc), m_height(h) {}
+    
+    bool hasLChild() {
+        return m_lchild == nullptr;
+    }
+    
+    bool hasRChild() {
+        return m_rchild == nullptr;
+    }
     
     BinNode<T>* insertAsLchild(T const& data);
     
@@ -46,7 +56,10 @@ struct BinNode {
     void travPre_R(BinNode<T>* node, VST &visit);
     
     template<typename VST>
-    void travPre_I(BinNode<T>* node, VST &visit);
+    void travPre_I1(BinNode<T>* node, VST &visit);
+    
+    template<typename VST>
+    void travPre_I2(BinNode<T>* node, VST &visit);
     
     template<typename VST>
     void travIn_R(BinNode<T>* node, VST &visit);
@@ -59,6 +72,12 @@ struct BinNode {
     
     template<typename VST>
     void travPost_I(BinNode<T>* node, VST &visit);
+    
+    template<typename VST>
+    void visitAlongLeftBranch(BinNode<T>* node, VST &visit, VStack<BinNode<T>*> &stk);
+    
+    template<typename VST>
+    void visitAlongLeftBranch(BinNode<T>* node, VStack<BinNode<T>*> &stk);
     
     T m_data;
     BinNode* m_parent;
@@ -98,12 +117,16 @@ int BinNode<T>::height() {
 template <typename T>
 template <typename VST>
 void BinNode<T>::travPre(VST &visit){
-    switch (rand() % 2) {
+    switch (rand() % 3) {
         case 0:
             travPre_R(this, visit);
             break;
         case 1:
-            travPre_I(this, visit);
+            travPre_I1(this, visit);
+            break;
+        case 2:
+            travPre_I2(this, visit);
+            break;
         default:
             break;
     }
@@ -142,8 +165,22 @@ void BinNode<T>::travPost(VST &visit){
 template <typename T>
 template <typename VST>
 void BinNode<T>::travLevel(VST &visit){
-    
+    LQueue<BinNode<T>> *queue;
+    queue->enqueue(this);
+    while (!queue->empty()) {
+        BinNode<T>* node = queue->dequeue();
+        visit(node->m_data);
+        
+        if(node->hasLChild()) {
+            queue->enqueue(node->m_lchild);
+        }
+        
+        if (node->hasRChild()) {
+            queue->enqueue(node->m_rchild);
+        }
+    }
 }
+
 
 template <typename T>
 template <typename VST>
@@ -158,8 +195,49 @@ void BinNode<T>::travPre_R(BinNode<T>* node, VST &visit){
 
 template <typename T>
 template <typename VST>
-void BinNode<T>::travPre_I(BinNode<T>* node, VST &visit) {
+void BinNode<T>::travPre_I1(BinNode<T>* node, VST &visit) {
+    VStack<BinNode<T>*> stk;
+    if (node != nullptr) {
+        stk.push(node);
+    }
+    BinNode<T>* x = node;
+    while (!stk.empty()) {
+        visit(x->m->m_data);
+        
+        if(hasRChild()) {
+            stk.push(x->m_rchild);
+        }
+        
+        if (hasLChild()) {
+            stk.push(x->m_lchild);
+        }
+    }
     
+}
+
+template <typename T>
+template <typename VST>
+void BinNode<T>::visitAlongLeftBranch(BinNode<T>* node, VST &visit, VStack<BinNode<T>*> &stk){
+    while (node) {
+        visit(node->m_data);
+        if (node->hasRChild) {
+            stk.push(node->m_rchild);
+        }
+        node = node->m_lchild;
+    }
+}
+
+template <typename T>
+template <typename VST>
+void BinNode<T>::travPre_I2(BinNode<T>* node, VST &visit) {
+    VStack<BinNode<T>*> stk;
+    while (true) {
+        visitAlongLeftBrach(node, visit, stk);
+        if (stk.empty()) {
+            break;
+        }
+        node = stk.pop();
+    }
 }
 
 template <typename T>
@@ -175,8 +253,25 @@ void BinNode<T>::travIn_R(BinNode<T>* node, VST &visit){
 
 template <typename T>
 template <typename VST>
-void BinNode<T>::travIn_I(BinNode<T>* node, VST &visit){
+void BinNode<T>::visitAlongLeftBranch(BinNode<T> *node, VStack<BinNode<T> *> &stk) {
+    while (node) {
+        stk.push(node);
+        node = node->m_lchild;
+    }
+}
 
+template <typename T>
+template <typename VST>
+void BinNode<T>::travIn_I(BinNode<T>* node, VST &visit){
+    VStack<BinNode<T>*> stk;
+    while (true) {
+        visitAlongLeftBranch(node, stk);
+        if (node->empty()) {
+            break;
+        }
+        visit(stk.pop());
+        node = node->m_rchild;
+    }
 }
 
 template <typename T>
@@ -205,7 +300,7 @@ private:
     BinNode<T>* m_root;
     
     virtual int updateHeight(BinNode<T>* x) {
-        return x->m_height = 1 + max(x->m_lchild->height(),
+        return x->m_height = 1 + std::max(x->m_lchild->height(),
                                      x->m_rchild->height());
     }
     
