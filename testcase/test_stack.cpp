@@ -1,10 +1,12 @@
-/*
+
 #include "v_stack.h"
 #include "l_stack.h"
 #include "stack_conversion.h"
 #include "stack_parentheses.h"
 #include "stack_infix.h"
 #include "stack_rpn.h"
+#include "../application/stack_queens.h"
+#include "../application/stack_maze.h"
 
 
 #include <iostream>
@@ -34,4 +36,3 @@ int main() {
     
     
 }
-*/

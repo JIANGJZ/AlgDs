@@ -3,9 +3,29 @@
 
 #include "v_stack.h"
 #include "l_queue.h"
+#include "../util/cleaner.h"
 
 #include <algorithm>
 #include <stdlib.h>
+
+/// BinNode状态与性质的判断
+#define isRoot(x) (!((x).m_parent))
+#define isLChild(x) (!isRoot(x) && (&(x) == (x).m_parent.m_lchild))
+#define isRChild(x) (!isRoot(x) && (&x == (x).m_parent.m_rchild))
+#define hasParent(x) (!(isRoot(x)))
+#define hasLChild(x) (!((x).m_lchild))
+#define hasRChild(x) (!((x).m_rchild))
+#define hasChild(x)  (hasLChild(x) || hasRChild(x))
+#define hasBothChild(x) (hasLChild(x) && hasRChild(x))
+#define isLeaf(x) (!hadChild)
+
+/// 与BinNode具有特定关系的节点和指针
+#define sibling(p)  \
+    (isLChild(*p) ? (p)->m_parent->m_rchild : (p)->m_parent->m_lchild)
+
+#define uncle(x)    \
+    (isLChild(*(p.->m_parent)) ? (p)->m_parent->m_parent->m_rchild : (p)->m_parent->m_parent->m_lchild)
+
 
 
 template <typename T>
@@ -14,14 +34,7 @@ struct BinNode {
     
     BinNode(T const& e, BinNode<T>* p = nullptr, BinNode<T>* lc = nullptr, BinNode<T>* rc = nullptr, int h = 0) :
     m_data(e), m_parent(p), m_lchild(lc), m_rchild(rc), m_height(h) {}
-    
-    bool hasLChild() {
-        return m_lchild == nullptr;
-    }
-    
-    bool hasRChild() {
-        return m_rchild == nullptr;
-    }
+
     
     BinNode<T>* insertAsLchild(T const& data);
     
@@ -69,6 +82,8 @@ struct BinNode {
     
     template<typename VST>
     void travPost_R(BinNode<T>* node, VST &visit);
+    
+    static void gotoHLVFL(VStack<BinNode<T>>* &S);
     
     template<typename VST>
     void travPost_I(BinNode<T>* node, VST &visit);
@@ -171,11 +186,11 @@ void BinNode<T>::travLevel(VST &visit){
         BinNode<T>* node = queue->dequeue();
         visit(node->m_data);
         
-        if(node->hasLChild()) {
+        if(hasLChild(*node)) {
             queue->enqueue(node->m_lchild);
         }
         
-        if (node->hasRChild()) {
+        if (hasRChild(*node)) {
             queue->enqueue(node->m_rchild);
         }
     }
@@ -200,15 +215,16 @@ void BinNode<T>::travPre_I1(BinNode<T>* node, VST &visit) {
     if (node != nullptr) {
         stk.push(node);
     }
-    BinNode<T>* x = node;
     while (!stk.empty()) {
-        visit(x->m->m_data);
+        BinNode<T>* x = stk.pop();
         
-        if(hasRChild()) {
+        visit(x->m_data);
+        
+        if(hasRChild(*x)) {
             stk.push(x->m_rchild);
         }
         
-        if (hasLChild()) {
+        if (hasLChild(*x)) {
             stk.push(x->m_lchild);
         }
     }
@@ -232,7 +248,7 @@ template <typename VST>
 void BinNode<T>::travPre_I2(BinNode<T>* node, VST &visit) {
     VStack<BinNode<T>*> stk;
     while (true) {
-        visitAlongLeftBrach(node, visit, stk);
+        visitAlongLeftBranch(node, visit, stk);
         if (stk.empty()) {
             break;
         }
@@ -283,6 +299,11 @@ void BinNode<T>::travPost_R(BinNode<T>* node, VST &visit){
     travPre_R(node->m_lchild, visit);
     travPre_R(node->m_lchild, visit);
     visit(node->m_data);
+}
+
+template <typename T>
+void BinNode<T>::gotoHLVFL(VStack<BinNode<T>> *&S) {
+    
 }
 
 template <typename T>
@@ -347,7 +368,7 @@ public:
     
     int removeAt(BinNode<T>* node);
     
-    BinNode<T>* getSubTree(BinNode<T>* node);
+    BinTree<T>* getSubTree(BinNode<T>* node);
     
     template <typename VST>
     void travelPre(VST &visit) {
@@ -411,7 +432,7 @@ BinNode<T>* BinTree<T>::attachAsLC(BinNode<T> *node, BinTree<T> *&sub_tree) {
     
     sub_tree->m_root = nullptr;
     sub_tree->m_size = 0;
-    delete sub_tree;
+    release(sub_tree);
     sub_tree = nullptr;
     
     return node;
@@ -427,7 +448,7 @@ BinNode<T>* BinTree<T>::attachAsRC(BinNode<T> *node, BinTree<T> *&sub_tree) {
     
     sub_tree->m_root = nullptr;
     sub_tree->m_size = 0;
-    delete sub_tree;
+    release(sub_tree);
     sub_tree = nullptr;
     
     return node;
@@ -435,17 +456,44 @@ BinNode<T>* BinTree<T>::attachAsRC(BinNode<T> *node, BinTree<T> *&sub_tree) {
 
 template <typename T>
 int BinTree<T>::remove(BinNode<T> *node) {
-    return 0;
+    BinNode<T>* node_parent = node->m_parent;
+    if (node_parent->m_rchild == node) {
+        node_parent->m_rchild = nullptr;
+    } else {
+        node_parent->m_lchild = nullptr;
+    }
+    updateHeightAbove(node_parent);
+    int n = removeAt(node);
+    m_size -= n;
+    return n;
 }
 
 template <typename T>
 int BinTree<T>::removeAt(BinNode<T> *node) {
-    return 0;
+    if (!node) {
+        return 0;
+    }
+    int n = 1 + removeAt(node->m_lchild) + removeAt(node->m_rchild);
+    release(node->m_data);
+    release(node);
+    return n;
 }
 
 template <typename T>
-BinNode<T>* BinTree<T>::getSubTree(BinNode<T> *node) {
-    return nullptr;
+BinTree<T>* BinTree<T>::getSubTree(BinNode<T> *node) {
+    BinNode<T>* node_parent = node->m_parent;
+    if (node_parent->m_rchild == node) {
+        node_parent->m_rchild = nullptr;
+    } else {
+        node_parent->m_lchild = nullptr;
+    }
+    updateHeightAbove(node_parent);
+    BinTree<T>* sub_tree = new BinTree<T>();
+    sub_tree->m_root = node;
+    sub_tree->m_root->m_parent = nullptr;
+    sub_tree->m_size = node->size();
+    m_size -= sub_tree->m_size;
+    return sub_tree;
 }
 
 #endif
