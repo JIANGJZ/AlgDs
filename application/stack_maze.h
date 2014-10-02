@@ -77,6 +77,7 @@ Cell* advance(Cell* cell) {
     return next;
 }
 
+//找相邻节点, 保存每一个可走的状态， 判断是否到达目的地
 bool findWay(Cell *s, Cell *t) {
     VStack<Cell*> path;
     s->incoming = UNKNOWN;
