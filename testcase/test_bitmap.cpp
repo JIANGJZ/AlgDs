@@ -1,5 +1,7 @@
-#include "../bitmap/bitmap.h"
+/*
+ #include "../bitmap/bitmap.h"
 
 int main() {
     Bitmap b_map;
 }
+*/
