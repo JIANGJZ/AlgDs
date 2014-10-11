@@ -158,7 +158,7 @@ void Graph<Tv, Te>::_dfs(int start_v, int &clock) {
                 _dfs(u, clock);
                 break;
             case DISCOVERED:
-                getEdgeStatus(start_v, u);
+                getEdgeStatus(start_v, u) = BACKWARD;
                 break;
             default:
                 getEdgeStatus(start_v, u) = getDtime(start_v)  < getDtime(u) ? FORWORD : CROSS;

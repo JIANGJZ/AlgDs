@@ -2,6 +2,8 @@
 #define AlgDs_bitmap_h
 
 #include <memory>
+#include <cstdio>
+#include <iostream>
 
 
 class Bitmap {
@@ -9,13 +11,17 @@ private:
     char *m_map;
     int m_byte_len;
     
+    void init(int n) {
+        m_byte_len = (n + 7)/8;
+        m_map = new char[m_byte_len];
+        memset(m_map, 0, m_byte_len);
+    }
+    
     void expand(int k);
 
 public:
     Bitmap(int n = 8) {
-        m_byte_len = (n + 7)/8;
-        m_map = new char[m_byte_len];
-        memset(m_map, 0, m_byte_len);
+        init(n);
     }
     
     ~Bitmap() {
@@ -28,6 +34,29 @@ public:
     void clear(int k);
     
     bool test(int k);
+    
+    void dump(char* file) {
+        FILE* fp = fopen(file, "w");
+        fwrite(m_map, sizeof(char), m_byte_len, fp);
+        fclose(fp);
+    }
+    
+    char* bits2string(int n) {
+        expand(n-1);
+        char* s = new char[n+1];
+        s[n] = '\0';
+        for (int i = 0; i < n; i++) {
+            s[i] = test(i) ? '1' : '0';
+        }
+        return s;
+    }
+    
+    void print(int n) {
+        expand(n);
+        for (int i = 0; i < n; i++) {
+            std::cout << (test(i) ? '1' : '0');
+        }
+    }
 };
 
 void Bitmap::expand(int k) {
@@ -62,5 +91,7 @@ bool Bitmap::test(int k) {
     expand(k);
     return m_map[k >> 3] & ((0x80) >> (k & 0x70));
 }
+
+
 
 #endif

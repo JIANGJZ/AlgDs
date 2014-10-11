@@ -7,7 +7,7 @@ template <typename T>
 class LStack : protected List<T> {
 public:
     void push(T const &e) {
-        List<T>::insert_as_last(e);
+        List<T>::insertAsLast(e);
     }
     
     T pop() {

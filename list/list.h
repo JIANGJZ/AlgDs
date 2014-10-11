@@ -75,13 +75,13 @@ public:
     
     T& operator [](Rank r) const;
     
-    ListNode<T>* insert_as_first(T const &e);
+    ListNode<T>* insertAsFirst(T const &e);
     
-    ListNode<T>* insert_as_last(T const &e);
+    ListNode<T>* insertAsLast(T const &e);
     
-    ListNode<T>* insert_before(ListNode<T>* p, T const &e);
+    ListNode<T>* insertBefore(ListNode<T>* p, T const &e);
     
-    ListNode<T>* insert_after(ListNode<T>* p, T const &e);
+    ListNode<T>* insertAfter(ListNode<T>* p, T const &e);
     
     T remove(ListNode<T>* p);
     
@@ -160,25 +160,25 @@ T& List<T>::operator[](Rank r) const {
 }
 
 template <typename T>
-ListNode<T>* List<T>::insert_as_first(const T &e) {
+ListNode<T>* List<T>::insertAsFirst(const T &e) {
     m_size++;
     return m_header->insert_as_succ(e);
 }
 
 template <typename T>
-ListNode<T>* List<T>::insert_as_last(const T &e){
+ListNode<T>* List<T>::insertAsLast(const T &e){
     m_size++;
     return m_tailer->insert_as_prev(e);
 }
 
 template <typename T>
-ListNode<T>* List<T>::insert_before(ListNode<T> *p, const T &e){
+ListNode<T>* List<T>::insertBefore(ListNode<T> *p, const T &e){
     m_size++;
     return p->insert_as_prev(e);
 }
 
 template <typename T>
-ListNode<T>* List<T>::insert_after(ListNode<T> *p, const T &e) {
+ListNode<T>* List<T>::insertAfter(ListNode<T> *p, const T &e) {
     m_size++;
     return p->insert_as_succ(e);
 }
@@ -206,7 +206,7 @@ template <typename T>
 void List<T>::copy_nodes(ListNode<T> *p, int num) {
     init();
     while (0 < num--) {
-        insert_as_Last(p->m_data);
+        insertAsLast(p->m_data);
         p = p->m_succ;
     }
 }

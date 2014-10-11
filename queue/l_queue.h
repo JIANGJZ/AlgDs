@@ -9,7 +9,7 @@ template <typename T>
 class LQueue : protected List<T>{
 public:
     void enqueue(T const &e) {
-        List<T>::insert_as_last(e);
+        List<T>::insertAsLast(e);
     }
     
     T dequeue() {
