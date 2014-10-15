@@ -24,8 +24,15 @@ public:
         init(n);
     }
     
+    Bitmap(char* file, int n = 8) {
+        init(n);
+        FILE* fp = fopen(file, "r");
+        fread(m_map, sizeof(char), m_byte_len, fp);
+        fclose(fp);
+    }
+    
     ~Bitmap() {
-        delete m_map;
+        delete []m_map;
         m_map = nullptr;
     }
     
