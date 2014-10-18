@@ -4,7 +4,7 @@
 #include "vector.h"
 #include "fibonacci.h"
 
-#include <assert.h>
+#include <cassert>
 #include <algorithm>
 
 const int g_default_capacity = 3;
@@ -138,9 +138,9 @@ void Vector<T>::_shrink() {
         return;
     }
     T *old_elem = m_element;
-    T *elem = new T[m_capacity >> 1];
+    m_element = new T[m_capacity >> 1];
     for (int i = 0; i < m_size; i++) {
-        elem[i] = old_elem[i];
+        m_element[i] = old_elem[i];
     }
     
     delete []old_elem;
