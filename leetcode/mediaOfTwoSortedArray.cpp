@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 using namespace std;
 
@@ -63,3 +64,4 @@ int main() {
     Sulotion s;
     cout << s.findMedia(A, 5, B, 3) << endl;
 }
+*/

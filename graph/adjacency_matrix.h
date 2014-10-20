@@ -163,7 +163,6 @@ public:
         this->m_edge++;
         m_vertex[index_v].outDegree++;
         m_vertex[index_v].inDegree++;
-        
     }
 };
 
