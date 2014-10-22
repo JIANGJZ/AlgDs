@@ -25,7 +25,7 @@ void merge1(T* element, int lo, int mid, int hi) {
 
 template <typename T>
 void mergeSort1(T* element, int lo, int hi) {
-    if (hi - lo < 2) {
+    if (hi - lo <= 1) {
         return;
     }
     int mid = lo + (hi - lo)/2;
@@ -59,7 +59,7 @@ void merge2(T* element, int lo, int mid, int hi) {
 
 template <typename T>
 void mergeSort2(T* element, int lo, int hi) {
-    if (hi - lo < 2) {
+    if (hi - lo <= 1) {
         return;
     }
     int mid = lo + (hi - lo)/2;
