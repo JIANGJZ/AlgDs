@@ -1,3 +1,4 @@
+/*
 #include <vector>
 #include <iostream>
 using namespace std;
@@ -5,23 +6,16 @@ using namespace std;
 class Solution {
 public:
     void nextPermutation(vector<int> &vec) {
-        auto begin = vec.rbegin();
-        auto end = vec.rend();
         
-        auto privot = begin;
-        
-        while (privot != end && *privot <= *next(privot)) {
-            privot++;
+        auto privot = next(vec.rbegin());
+        while (privot != vec.rend() && *privot >= *prev(privot)) {
+            ++privot;
         }
         
-        cout << *privot << endl;
-        cout << *prev(end) << endl;
-        
-        if(privot != prev(end)) {
-            privot++;
-            auto change = find_if(begin, privot, bind1st(less<int>(), *privot));
+        if(privot != vec.rend()) {
+            auto change = find_if(vec.rbegin(), privot, bind1st(less<int>(), *privot));
             swap(*change, *privot);
-            reverse(begin, privot);
+            reverse(vec.rbegin(), privot);
         } else {
             reverse(vec.begin(), vec.end());
         }
@@ -38,3 +32,4 @@ int main() {
         cout << i << " ";
     }
 }
+*/
