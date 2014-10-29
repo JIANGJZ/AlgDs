@@ -28,12 +28,17 @@
 
 
 
+typedef enum {
+    RB_RED,
+    RB_BLACK
+}RBColor;
+
 template <typename T>
 struct BinNode {
     BinNode() {}
     
-    BinNode(T const& e, BinNode<T>* p = nullptr, BinNode<T>* lc = nullptr, BinNode<T>* rc = nullptr, int h = 0) :
-    m_data(e), m_parent(p), m_lchild(lc), m_rchild(rc), m_height(h) {}
+    BinNode(T const& e, BinNode<T>* p = nullptr, BinNode<T>* lc = nullptr, BinNode<T>* rc = nullptr, int h = 0, int l = 1, RBColor c = RB_RED) :
+    m_data(e), m_parent(p), m_lchild(lc), m_rchild(rc), m_height(h), m_npl(l), m_color(c){}
 
     
     BinNode<T>* insertAsLchild(T const& data);
@@ -99,6 +104,9 @@ struct BinNode {
     BinNode* m_lchild;
     BinNode* m_rchild;
     int m_height;
+    
+    int m_npl;
+    RBColor m_color;
 };
 
 
@@ -316,7 +324,7 @@ void BinNode<T>::travPost_I(BinNode<T>* node, VST &visit){
 
 template <typename T>
 class BinTree {
-private:
+public:
     int m_size;
     BinNode<T>* m_root;
     
