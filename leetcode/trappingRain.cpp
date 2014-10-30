@@ -87,7 +87,7 @@ public:
                 if (arr[i] < stack_top_v) {
                     break;
                 } else {
-                    s.top();
+                    s.pop();
                 }
             }
             
