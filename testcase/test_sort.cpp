@@ -1,7 +1,7 @@
-/*
 #include "../sort/sort.h"
 #include "../sort/bubbleSort.h"
 #include "../sort/mergeSort.h"
+#include "../sort/quickSort.h"
 
 #include <iostream>
 using namespace std;
@@ -13,4 +13,3 @@ int main() {
         cout << element;
     }
 }
-*/

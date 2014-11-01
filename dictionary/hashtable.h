@@ -171,5 +171,10 @@ bool HashTable<K, V>::put(K key, V val) {
     return true;
 }
 
+template <typename K, typename V>
+int HashTable<K, V>::size() const {
+    return entry_num;
+}
+
 
 #endif

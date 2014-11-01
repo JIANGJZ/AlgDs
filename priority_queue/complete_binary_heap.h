@@ -29,7 +29,7 @@
         )
 
 template <typename T>
-class PQ_Complheap : public PQ<T>, Vector<T> {
+class PQ_Complheap : public PQ<T>, public Vector<T> {
 protected:
     int down(int n, int i);
     
@@ -41,6 +41,10 @@ public:
         Vector<T>::_copy_from(array, 0, n);
         heapify(n);
     }
+    
+    PQ_Complheap() {}
+    
+    ~PQ_Complheap() {}
     
     void insert(T val);
     

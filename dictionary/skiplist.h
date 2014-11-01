@@ -156,7 +156,7 @@ public:
     
     bool put(K key, V value);
     
-    V* get(K k);
+    V* get(K k) const;
     
     bool remove(K k);
 };

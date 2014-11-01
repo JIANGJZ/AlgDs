@@ -17,7 +17,7 @@
 #define hasRChild(x) (!((x).m_rchild))
 #define hasChild(x)  (hasLChild(x) || hasRChild(x))
 #define hasBothChild(x) (hasLChild(x) && hasRChild(x))
-#define isLeaf(x) (!hadChild)
+#define isLeaf(x) (!hasChild(x))
 
 /// 与BinNode具有特定关系的节点和指针
 #define sibling(p)  \

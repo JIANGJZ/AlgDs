@@ -8,7 +8,7 @@ public:
     
     virtual bool put(K key, V val) = 0;
     
-    virtual V get(K key) = 0;
+    virtual V* get(K key) const = 0;
     
     virtual bool remove(K key) = 0;
 };
