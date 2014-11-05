@@ -1,3 +1,4 @@
+/*
 #include "../sort/sort.h"
 #include "../sort/bubbleSort.h"
 #include "../sort/mergeSort.h"
@@ -13,3 +14,4 @@ int main() {
         cout << element;
     }
 }
+*/
