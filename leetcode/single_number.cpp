@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include <numeric>
 
@@ -30,3 +31,4 @@ int main()
     Solution s;
     cout << s.findSingle(A, 5) << endl;
 }
+*/
