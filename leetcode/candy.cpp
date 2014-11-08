@@ -65,7 +65,7 @@ private:
 };
 
 
-
+/*
 int main()
 {
     Solution1 s;
@@ -74,3 +74,4 @@ int main()
     cout << s.candy(rating) << endl;
     cout << s2.candy(rating) << endl;
 }
+*/
