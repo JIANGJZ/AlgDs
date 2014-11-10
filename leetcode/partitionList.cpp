@@ -93,7 +93,7 @@ public:
         delete list_less;
     }
 };
-
+/*
 int main()
 {
     List* ori_list = new List();
@@ -109,3 +109,4 @@ int main()
     s.partitionList(ori_list, 3, result_list);
     return 0;
 }
+*/

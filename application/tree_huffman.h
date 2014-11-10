@@ -105,8 +105,7 @@ HuffTree* generateTree(HuffForest3* forest) {
         s->attachAsLC(s->m_root, s2);
         forest->insertAsLast(s);
     }
-    
-    
+ 
     return forest->first()->m_data;
 }
 
