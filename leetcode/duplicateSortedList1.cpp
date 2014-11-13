@@ -130,6 +130,7 @@ private:
     }
 };
 
+/*
 int main()
 {
     list<int> l;
@@ -173,3 +174,4 @@ int main()
     
     return 0;
 }
+*/
