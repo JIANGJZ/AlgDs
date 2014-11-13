@@ -146,7 +146,7 @@ private:
                     K& k);
     
 public:
-    int size() {
+    int size() const {
         return List<Quadlist<Entry<K, V>>*>::empty() ? 0 : List<Quadlist<Entry<K, V>>*>::last()->m_data->size();
     }
     
@@ -218,7 +218,7 @@ bool put(K key, V value) {
 
 
 template <typename K, typename V>
-V* Skiplist<K, V>::get(K k) {
+V* Skiplist<K, V>::get(K k) const{
     if (List<Quadlist<Entry<K, V>>*>::empty()) {
         return nullptr;
     }
