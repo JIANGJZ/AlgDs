@@ -184,7 +184,7 @@ int encode(HuffTable* table, Bitmap* codeString, char* s) {
     return n;
 }
 
-
+/*
 int main(int argc, char* argv[]) {
     int* freq = statistics(argv[1]);
     HuffForest1* forest = initForest_PQ_Complheap(freq);
@@ -206,5 +206,6 @@ int main(int argc, char* argv[]) {
     return 0;
     
 }
+*/
 
 #endif

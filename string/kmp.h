@@ -2,5 +2,4 @@
 #define AlgDs_kmp_h
 
 
-
 #endif
