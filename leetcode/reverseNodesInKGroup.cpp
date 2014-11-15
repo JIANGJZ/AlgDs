@@ -41,6 +41,7 @@ private:
     }
 };
 
+/*
 int main()
 {
     SolutionSTL s;
@@ -51,3 +52,4 @@ int main()
     
     copy(l.begin(), l.end(), ostream_iterator<int>(cout, " "));
 }
+*/

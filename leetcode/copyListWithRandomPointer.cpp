@@ -97,7 +97,6 @@ public:
             rand_node = rand_node->m_next;
         }
         
-       
     }
 };
 
