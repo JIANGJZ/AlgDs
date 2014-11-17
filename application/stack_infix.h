@@ -139,7 +139,7 @@ float cacul(float a, char op) {
     }
 }
 
-float evaluete(char *s) {
+float evaluate(char *s) {
     VStack<float> opnd;
     VStack<char> optr;
     optr.push('\0');

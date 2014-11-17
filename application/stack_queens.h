@@ -101,5 +101,4 @@ void placeQueen_stack(int N) {
 }
 
 
-
 #endif
