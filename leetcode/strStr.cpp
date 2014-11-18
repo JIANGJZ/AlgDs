@@ -33,7 +33,7 @@ public:
     }
 };
 
-
+/*
 int main()
 {
     Solution s;
@@ -41,3 +41,4 @@ int main()
     const char* patten = "llo";
     cout << s.strStr(text, patten);
 }
+*/

@@ -1,3 +1,5 @@
+#include <iostream>
+
 enum Status {
     kValid = 0,
     kInvalid
@@ -7,7 +9,7 @@ int g_Status = kValid;
 
 long long strToIntCore(const char* digit, bool minus) {
     long long num = 0;
-    while (digit != '\0') {
+    while ((*digit != '\0')) {
         if (*digit >= '0' && *digit <= '9') {
             int flag = minus ? -1 : 1;
             num = num * 10 + flag * (*digit  - '0');
@@ -21,7 +23,7 @@ long long strToIntCore(const char* digit, bool minus) {
             num = 0;
             break;
         }
-            
+        ++digit;
     }
     
     if (*digit == '\0') {
@@ -57,3 +59,11 @@ int strToInt(const char* str) {
     return (int)num;
     
 }
+
+/*
+int main()
+{
+    const char* s = "1234";
+    std::cout << strToInt(s);
+}
+*/

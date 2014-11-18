@@ -19,6 +19,7 @@ bool getNodePath(TreeNode* pRoot, TreeNode* pNode, list<TreeNode*>& path) {
     vector<TreeNode*>::iterator i = pRoot->m_vChild.begin();
     
     while (!found && i < pRoot->m_vChild.end()) {
+        found = getNodePath(*i, pNode, path);
         ++i;
     }
     
@@ -27,13 +28,12 @@ bool getNodePath(TreeNode* pRoot, TreeNode* pNode, list<TreeNode*>& path) {
     }
     
     return found;
-    
 }
 
 
 TreeNode* getLastCommonNode(list<TreeNode*>& path1, list<TreeNode*>& path2) {
-     list<TreeNode*>::iterator it1 = path1.begin();
-     list<TreeNode*>::iterator it2 = path2.begin();
+     list<TreeNode*>::const_iterator it1 = path1.begin();
+     list<TreeNode*>::const_iterator it2 = path2.begin();
     
     TreeNode* pLast = NULL;
     
@@ -48,3 +48,24 @@ TreeNode* getLastCommonNode(list<TreeNode*>& path1, list<TreeNode*>& path2) {
     
     return pLast;
 }
+
+TreeNode* getLastCommonParent(TreeNode* node1, TreeNode* node2, TreeNode* root) {
+    if (node1 == NULL || node2 == NULL || root == NULL) {
+        return NULL;
+    }
+    
+    list<TreeNode*> path1;
+    if (!getNodePath(root, node1, path1)) {
+        return NULL;
+    }
+    
+    list<TreeNode*> path2;
+    if (!getNodePath(root, node2, path2)) {
+        return NULL;
+    }
+    
+    TreeNode* last_parent = getLastCommonNode(path1, path2);
+    return last_parent;
+}
+
+
